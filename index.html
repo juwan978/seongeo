@@ -353,17 +353,35 @@ function tone(freq, start, dur, vol, type) {
   o.connect(g); g.connect(c.destination);
   o.start(t0); o.stop(t0 + dur + 0.05);
 }
+// iOS 는 사용자가 화면을 처음 건드릴 때 오디오를 열어 두지 않으면 소리가 나지 않는다.
+let AUDIO_READY = false;
+function unlockAudio() {
+  if (AUDIO_READY) return;
+  const c = ac(); if (!c) return;
+  try {
+    if (c.state === 'suspended') c.resume();
+    const b = c.createBuffer(1, 1, 22050);
+    const src = c.createBufferSource();
+    src.buffer = b; src.connect(c.destination); src.start(0);
+    AUDIO_READY = true;
+  } catch (e) { }
+}
+document.addEventListener('touchstart', unlockAudio, { passive: true });
+document.addEventListener('touchend', unlockAudio, { passive: true });
+document.addEventListener('pointerdown', unlockAudio, { passive: true });
+document.addEventListener('click', unlockAudio, { passive: true });
+
 let SOUND = true;
 try { SOUND = localStorage.getItem('seongeo-sound') !== 'off'; } catch (e) { }
 function dingdong() {
   if (!SOUND) return;
-  tone(1174.7, 0, 0.30, 0.22);
-  tone(880.0, 0.17, 0.42, 0.20);
+  tone(1174.7, 0, 0.32, 0.34);
+  tone(880.0, 0.17, 0.44, 0.32);
 }
 function ttaeng() {
   if (!SOUND) return;
-  tone(196.0, 0, 0.42, 0.20, 'triangle');
-  tone(155.6, 0.05, 0.50, 0.16, 'triangle');
+  tone(196.0, 0, 0.44, 0.32, 'triangle');
+  tone(155.6, 0.05, 0.52, 0.26, 'triangle');
 }
 
 /* ============ 상태 ============ */

@@ -1,0 +1,9 @@
+{
+  "name": "성어 뜻 맞히기",
+  "short_name": "고사성어",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#F4F5F7",
+  "theme_color": "#1F4FA8",
+  "icons": [{ "src": "icon-180.png", "sizes": "180x180", "type": "image/png" }]
+}
